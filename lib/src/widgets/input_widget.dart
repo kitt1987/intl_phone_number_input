@@ -52,6 +52,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final TextInputAction? keyboardAction;
 
   final PhoneNumber? initialValue;
+  final String? initialCountry;
   final String? hintText;
   final String? errorMessage;
 
@@ -100,6 +101,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.keyboardAction,
       this.keyboardType = TextInputType.phone,
       this.initialValue,
+      this.initialCountry,
       this.hintText = 'Phone number',
       this.errorMessage = 'Invalid phone number',
       this.selectorButtonOnErrorPadding = 24,
@@ -202,7 +204,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
       Country country = previouslySelectedCountry ??
           Utils.getInitialSelectedCountry(
             countries,
-            widget.initialValue?.isoCode ?? '',
+            widget.initialValue?.isoCode ?? widget.initialCountry ?? '',
           );
 
       // Remove potential duplicates
