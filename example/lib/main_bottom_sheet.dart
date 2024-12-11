@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onInputChanged: (PhoneNumber number) {
                 print(number.phoneNumber);
               },
-              onInputValidated: (bool value) {
+              onInputValidated: (bool value, PhoneNumber number) {
                 print(value);
               },
               ignoreBlank: true,

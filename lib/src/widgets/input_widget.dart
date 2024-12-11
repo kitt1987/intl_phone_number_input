@@ -39,7 +39,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final SelectorConfig selectorConfig;
 
   final ValueChanged<PhoneNumber>? onInputChanged;
-  final ValueChanged<bool>? onInputValidated;
+  final Function(bool, PhoneNumber)? onInputValidated;
 
   final VoidCallback? onSubmit;
   final ValueChanged<String>? onFieldSubmitted;
@@ -235,28 +235,29 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
         if (phoneNumber == null) {
           String phoneNumber =
               '${this.country?.dialCode}$parsedPhoneNumberString';
-
+          final pn = PhoneNumber(
+              phoneNumber: phoneNumber,
+              isoCode: this.country?.alpha2Code,
+              dialCode: this.country?.dialCode);
           if (widget.onInputChanged != null) {
-            widget.onInputChanged!(PhoneNumber(
-                phoneNumber: phoneNumber,
-                isoCode: this.country?.alpha2Code,
-                dialCode: this.country?.dialCode));
+            widget.onInputChanged!(pn);
           }
 
           if (widget.onInputValidated != null) {
-            widget.onInputValidated!(false);
+            widget.onInputValidated!(false, pn);
           }
           this.isNotValid = true;
         } else {
+          final pn = PhoneNumber(
+              phoneNumber: phoneNumber,
+              isoCode: this.country?.alpha2Code,
+              dialCode: this.country?.dialCode);
           if (widget.onInputChanged != null) {
-            widget.onInputChanged!(PhoneNumber(
-                phoneNumber: phoneNumber,
-                isoCode: this.country?.alpha2Code,
-                dialCode: this.country?.dialCode));
+            widget.onInputChanged!(pn);
           }
 
           if (widget.onInputValidated != null) {
-            widget.onInputValidated!(true);
+            widget.onInputValidated!(true, pn);
           }
           this.isNotValid = false;
         }
