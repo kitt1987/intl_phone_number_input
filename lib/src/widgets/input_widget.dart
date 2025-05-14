@@ -229,14 +229,14 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
     if (this.mounted) {
       String parsedPhoneNumberString =
           controller!.text.replaceAll(RegExp(r'[^\d+]'), '');
+      String phoneNumberString =
+          '${this.country?.dialCode ?? ''}' + parsedPhoneNumberString;
 
       getParsedPhoneNumber(parsedPhoneNumberString, this.country?.alpha2Code)
           .then((phoneNumber) {
         if (phoneNumber == null) {
-          String phoneNumber =
-              '${this.country?.dialCode}$parsedPhoneNumberString';
           final pn = PhoneNumber(
-              phoneNumber: phoneNumber,
+              phoneNumber: phoneNumberString,
               isoCode: this.country?.alpha2Code,
               dialCode: this.country?.dialCode);
           if (widget.onInputChanged != null) {
@@ -249,7 +249,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
           this.isNotValid = true;
         } else {
           final pn = PhoneNumber(
-              phoneNumber: phoneNumber,
+              phoneNumber: phoneNumberString,
               isoCode: this.country?.alpha2Code,
               dialCode: this.country?.dialCode);
           if (widget.onInputChanged != null) {
