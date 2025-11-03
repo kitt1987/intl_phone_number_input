@@ -88,6 +88,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final List<String>? countries;
 
   final bool? disableCountries;
+  final bool? optional;
 
   InternationalPhoneNumberInput(
       {Key? key,
@@ -129,7 +130,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.cursorColor,
       this.autofillHints,
       this.countries,
-      this.disableCountries})
+      this.disableCountries,
+      this.optional})
       : super(key: key);
 
   @override
@@ -147,6 +149,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   @override
   void initState() {
     super.initState();
+    isNotValid = !(widget.optional ?? false);
     loadCountries();
     controller = widget.textFieldController ?? TextEditingController();
     initialiseWidget();
@@ -231,6 +234,11 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
       String parsedPhoneNumberString =
           controller!.text.replaceAll(RegExp(r'[^\d+]'), '');
       String phoneNumberString = parsedPhoneNumberString;
+
+      if (phoneNumberString.isEmpty && (widget.optional ?? false)) {
+        this.isNotValid = true;
+        return;
+      }
 
       getParsedPhoneNumber(parsedPhoneNumberString, this.country?.alpha2Code)
           .then((phoneNumber) {
