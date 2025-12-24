@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -251,8 +252,11 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
             widget.onInputChanged!(pn);
           }
 
+          final valid = widget.validator != null &&
+              widget.validator!(phoneNumberString) == null;
+
           if (widget.onInputValidated != null) {
-            widget.onInputValidated!(false, pn);
+            widget.onInputValidated!(valid, pn);
           }
           this.isNotValid = true;
         } else {
@@ -264,8 +268,9 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
             widget.onInputChanged!(pn);
           }
 
+          final valid = widget.validator?.call(phoneNumberString) == null;
           if (widget.onInputValidated != null) {
-            widget.onInputValidated!(true, pn);
+            widget.onInputValidated!(valid, pn);
           }
           this.isNotValid = false;
         }
